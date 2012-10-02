@@ -1,0 +1,7 @@
+{
+  "volo": {
+    "dependencies": {
+      "require-css": "github:guybedford/require-css/master"
+    }
+  }
+}
