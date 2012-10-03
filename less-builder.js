@@ -36,7 +36,6 @@ define(['require-css/css-builder', './lessc'], function(css, lessc) {
   }
   
   less.onLayerComplete = function(name, write) {
-    console.log('on layer complete');
     css.onLayerComplete.call(this, name, write);
   }
   
