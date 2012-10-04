@@ -29,14 +29,11 @@ define(['require-css/css-builder', './lessc'], function(css, lessc) {
   less._layerBuffer = [];
   
   less.write = function(pluginName, moduleName, write) {
-    if (moduleName.substr(0, 2) != '>>')
-      css.write.call(less, pluginName, nameLess(moduleName), write, parseLess);
-    else
-      less.onLayerComplete(moduleName.substr(2), write);
+    css.write.call(less, pluginName, nameLess(moduleName), write, parseLess);
   }
   
-  less.onLayerComplete = function(name, write) {
-    css.onLayerComplete.call(this, name, write);
+  less.onLayerEnd = function(write, data) {
+    css.onLayerEnd.call(this, write, data);
   }
   
   return less;

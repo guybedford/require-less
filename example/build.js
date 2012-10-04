@@ -16,12 +16,11 @@
     {
       name: 'core-components',
       create: true,
-      include: ['components/component', 'less!>>core-components'],
+      include: ['components/component'],
       exclude: ['less']
     },
     {
       name: 'app',
-      include: ['less!>>app'],
       exclude: ['core-components', 'less']
     }
   ]
