@@ -27,13 +27,7 @@ Download the require-less folder manually or use [volo](https://github.com/voloj
 volo add guybedford/require-less
 ```
 
-Volo will automatically install the text plugin and require-css, which are needed dependencies.
-
-For a manual install, download them at:
-* [Text plugin](https://raw.github.com/requirejs/text/latest/text.js)
-* [RequireCSS](https://github.com/guybedford/require-css/zipball/master)
-
-and copy them into the baseUrl folder.
+Volo will automatically download [require-css](https://github.com/guybedford/require-css/zipball/master), which is a needed dependency.
 
 Then add the following [map configuration](http://requirejs.org/docs/api.html#config-map) in RequireJS:
 
