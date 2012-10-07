@@ -1,8 +1,23 @@
-define(['css', 'require'], function(css, require) {
+define(['css', 'require', './lessc'], function(css, require, lessc) {
+  
+  if (typeof window == 'undefined')
+    return { load: function(n, r, load){ load() } };
   
   var less = {};
   
   less.pluginBuilder = './less-builder';
+  
+  var parser = new lessc.Parser();
+  
+  less.parse = function(less) {
+    parser.parse(less, function(err, tree) {
+      if (err)
+        throw err;
+      css = tree.toCSS();
+    });
+    //instant callback luckily
+    return css;
+  }
   
   //copy api methods from the css plugin
   less.normalize = css.normalize;
@@ -16,25 +31,6 @@ define(['css', 'require'], function(css, require) {
     
     if (lessId.substr(lessId.length - 5, 5) != '.less')
       lessId += '.less';
-    
-    //separately load the parser to avoid building it in
-    if (less.parse == undefined && !css.defined[lessId]) {
-      require(['./lessc'], function(lessc) {
-        var parser = new lessc.Parser();
-        less.parse = function(less) {
-          var css;
-          parser.parse(less, function(err, tree) {
-            if (err)
-              throw err;
-            css = tree.toCSS();
-          });
-          //instant callback luckily
-          return css;
-        }
-        less.load(lessId, req, load, config);
-      });
-      return false;
-    }
     
     css.load(lessId, req, skipLoad ? function(){} : load, config, less.parse);
     
