@@ -10,6 +10,7 @@ define(['css', 'require', './lessc'], function(css, require, lessc) {
   var parser = new lessc.Parser();
   
   less.parse = function(less) {
+    var css;
     parser.parse(less, function(err, tree) {
       if (err)
         throw err;
