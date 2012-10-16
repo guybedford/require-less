@@ -1,3 +1,3 @@
-require(['components/component', 'less!less-style/style'], function(component) {
+define(['components/component', 'less!less-style/style'], function(component) {
   return 'uses the component!';
 });

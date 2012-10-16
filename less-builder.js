@@ -29,10 +29,10 @@ define(['require-css/css-builder', './lessc'], function(css, lessc) {
     css.load(name, req, load, config);
   }
   
-  less._layerBuffer = [];
+  less._layerBuffer = css._layerBuffer;
   
   less.write = function(pluginName, moduleName, write) {
-    css.write(pluginName, nameLess(moduleName), write, parseLess);
+    css.write(pluginName, moduleName, write, parseLess, 'less');
   }
   
   less.onLayerEnd = function(write, data) {

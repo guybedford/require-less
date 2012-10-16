@@ -16,8 +16,8 @@
     {
       name: 'core-components',
       create: true,
-      include: ['components/component'],
-      exclude: ['less']
+      include: ['components/component', 'css'],
+      excludeShallow: ['require-css/css-builder', 'require-less/less', 'require-less/lessc']
     },
     {
       name: 'app',
