@@ -25,15 +25,18 @@ define(['require-css/css-builder', './lessc'], function(css, lessc) {
   less.normalize = css.normalize;
   less.set = css.set;
   less.loadFile = css.loadFile;
-  less.load = css.load;
+  less.load = function(name, req, load, config) {
+    css.load(name, req, load, config);
+  }
+  
   less._layerBuffer = [];
   
   less.write = function(pluginName, moduleName, write) {
-    css.write.call(less, pluginName, nameLess(moduleName), write, parseLess);
+    css.write(pluginName, nameLess(moduleName), write, parseLess);
   }
   
   less.onLayerEnd = function(write, data) {
-    css.onLayerEnd.call(this, write, data);
+    css.onLayerEnd(write, data);
   }
   
   return less;

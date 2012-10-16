@@ -1,8 +1,5 @@
 define(['css', 'require', './lessc'], function(css, require, lessc) {
   
-  if (typeof window == 'undefined')
-    return { load: function(n, r, load){ load() } };
-  
   var less = {};
   
   less.pluginBuilder = './less-builder';
@@ -18,6 +15,11 @@ define(['css', 'require', './lessc'], function(css, require, lessc) {
     });
     //instant callback luckily
     return css;
+  }
+  
+  if (typeof window == 'undefined') {
+    less.load = function(n, r, load) { load(); }
+    return less;
   }
   
   //copy api methods from the css plugin
