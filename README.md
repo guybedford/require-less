@@ -45,16 +45,13 @@ Builds
 
 The RequireCSS build system is used to build LESS. The exact same options thus apply.
 
-There are a couple of exceptions though:
-
-1. Pending [r.js issue 289](https://github.com/jrburke/r.js/issues/289), the module `require-css/css-builder' requires a shallow exclude.
-2. To exclude the client-side less compiler, a shallow exclusion must be made to `require-less/less` (the plugin), as well as `require-less/lessc` (the less compiler).
+Pending [r.js issue 289](https://github.com/jrburke/r.js/issues/289), the modules `require-css/css-builder` and `require-less/lessc` require a shallow exclude.
 
 Thus, add the following shallow exclusions at the module level:
 
 ```javascript
 {
-  excludeShallow: ['require-css/css-builder', 'require-less/less', 'require-less/lessc']
+  excludeShallow: ['require-css/css-builder', 'require-less/lessc']
 }
 ```
 

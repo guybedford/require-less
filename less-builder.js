@@ -29,8 +29,6 @@ define(['require-css/css-builder', './lessc'], function(css, lessc) {
     css.load(name, req, load, config);
   }
   
-  less._layerBuffer = css._layerBuffer;
-  
   less.write = function(pluginName, moduleName, write) {
     css.write(pluginName, moduleName, write, parseLess, 'less');
   }
