@@ -3,7 +3,7 @@ require-less
 
 Optimizable LESS requiring with RequireJS
 
-Based on the [require-css module](https://github.com/guybedford/require-css), read the documentation there for usage instruactions.
+Based on the [require-css module](https://github.com/guybedford/require-css), read the documentation there for usage instructions.
 
 Basic Overview
 --------------
