@@ -10,17 +10,29 @@ define(['css', 'require'], function(css, require) {
   }
   
   //copy api methods from the css plugin
-  less.normalize = css.normalize;
+  var instantCallbacks = {};
+  less.normalize = function(name, normalize) {
+    var instantCallback;
+    instantCallback = name.substr(name.length - 1, 1) == '!';
+
+    if (instantCallback)
+      name = name.substr(0, name.length - 1);
+
+    if (name.substr(name.length - 5, 5) == '.less')
+      name = name.substr(0, name.length - 5);
+
+    name = normalize(name);
+
+    if (instantCallback)
+      instantCallbacks[name] = true;
+
+    return name;
+  }
   
   less.load = function(lessId, req, load, config) {
-    var skipLoad = false;
-    if (lessId.substr(lessId.length - 1, 1) == '!') {
-      lessId = lessId.substr(0, lessId.length - 1);
-      skipLoad = true;
-    }
-    
-    if (lessId.substr(lessId.length - 5, 5) != '.less')
-      lessId += '.less';
+    var instantCallback = instantCallbacks[lessId];
+    if (instantCallback)
+      delete instantCallbacks[lessId];
     
     if (!less.parse) {
       require(['./lessc'], function(lessc) {
@@ -35,13 +47,13 @@ define(['css', 'require'], function(css, require) {
           //instant callback luckily
           return css;
         }
-        css.load(lessId, req, skipLoad ? function(){} : load, config, less.parse);
+        css.load(lessId + '.less', req, instantCallback ? function(){} : load, config, less.parse);
       });
     }
     else
-      css.load(lessId, req, skipLoad ? function(){} : load, config, less.parse);
+      css.load(lessId + '.less', req, instantCallback ? function(){} : load, config, less.parse);
     
-    if (skipLoad)
+    if (instantCallback)
       load();
   }
   
