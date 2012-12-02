@@ -2,7 +2,7 @@
   "volo": {
     "type": "directory",
     "dependencies": {
-      "require-css": "guybedford/require-css"
+      "require-css": "guybedford/require-css/master"
     }
   }
 }
