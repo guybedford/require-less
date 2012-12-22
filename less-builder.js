@@ -1,7 +1,15 @@
-define(['require-css/css-builder', './lessc'], function(css, lessc) {
+define(['require-css/css-builder', './lessc-server', 'require'], function(css, lessc, req) {
   var less = {};
   
-  var parser = new lessc.Parser();
+  var baseParts = req.toUrl('.').split('/');
+  baseParts.pop();
+  var baseUrl = baseParts.join('/');
+
+  // include the base url as a path
+  var parser = new lessc.Parser({
+    paths: [baseUrl + '/']
+  });
+
   var parseLess = function(less) {
     var CSS;
     parser.parse(less, function(err, tree) {
