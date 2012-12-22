@@ -51,7 +51,7 @@ Thus, add the following shallow exclusions at the module level:
 
 ```javascript
 {
-  excludeShallow: ['require-css/css-builder', 'require-less/lessc']
+  excludeShallow: ['require-css/css-builder', 'require-less/lessc-server']
 }
 ```
 
