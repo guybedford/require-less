@@ -3,7 +3,6 @@ define(['./lessc'], function(less) {
     var path = require.nodeRequire('path');
 
     less.Parser.importer = function (file, paths, callback, env) {
-        console.log('importing ' + file);
         var pathname, data;
 
         // TODO: Undo this at some point,
@@ -48,15 +47,11 @@ define(['./lessc'], function(less) {
             });
         };
 
-        if (env.syncImport) {
-            try {
-                data = fs.readFileSync(pathname, 'utf-8');
-                parseFile(null, data);
-            } catch (e) {
-                parseFile(e);
-            }
-        } else {
-            fs.readFile(pathname, 'utf-8', parseFile);
+        try {
+            data = fs.readFileSync(pathname, 'utf-8');
+            parseFile(null, data);
+        } catch (e) {
+            parseFile(e);
         }
     }
     return less;
