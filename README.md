@@ -34,7 +34,7 @@ Then add the following [map configuration](http://requirejs.org/docs/api.html#co
 ```javascript
 map: {
   '*': {
-    'css': 'require-css/css',
+    'css': 'require-css/css', // or whatever the path to require-css and require-less are
     'less': 'require-less/less'
   }
 }
