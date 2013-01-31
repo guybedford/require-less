@@ -37,7 +37,7 @@ define(['require-css/css-builder', './lessc-server', 'require'], function(css, l
   }
   
   less.onLayerEnd = function(write, data) {
-    css.onLayerEnd(write, data);
+    css.onLayerEnd(write, data, true);
   }
   
   return less;
