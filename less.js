@@ -10,30 +10,16 @@ define(['css', 'require'], function(css, require) {
   }
   
   //copy api methods from the css plugin
-  var instantCallbacks = {};
   less.normalize = function(name, normalize) {
-    var instantCallback;
-    instantCallback = name.substr(name.length - 1, 1) == '!';
-
-    if (instantCallback)
-      name = name.substr(0, name.length - 1);
-
     if (name.substr(name.length - 5, 5) == '.less')
       name = name.substr(0, name.length - 5);
 
     name = normalize(name);
 
-    if (instantCallback)
-      instantCallbacks[name] = true;
-
     return name;
   }
   
   less.load = function(lessId, req, load, config) {
-    var instantCallback = instantCallbacks[lessId];
-    if (instantCallback)
-      delete instantCallbacks[lessId];
-    
     if (!less.parse) {
       require(['./lessc'], function(lessc) {
         var parser = new lessc.Parser();
@@ -47,14 +33,11 @@ define(['css', 'require'], function(css, require) {
           //instant callback luckily
           return css;
         }
-        css.load(lessId + '.less', req, instantCallback ? function(){} : load, config, less.parse);
+        css.load(lessId, req, load, config, less.parse);
       });
     }
     else
-      css.load(lessId + '.less', req, instantCallback ? function(){} : load, config, less.parse);
-    
-    if (instantCallback)
-      load();
+      css.load(lessId, req, load, config, less.parse);
   }
   
   return less;
