@@ -18,26 +18,24 @@ define(['css', 'require'], function(css, require) {
 
     return name;
   }
+
+  less.parse = function(less, callback) {
+    require(['./lessc'], function(lessc) {
+      var css;
+      var parser = new lessc.Parser();
+      parser.parse(less, function(err, tree) {
+        if (err)
+          throw err;
+        css = tree.toCSS();
+        //instant callback luckily for builds
+        callback(css);
+      });
+    });
+  }
+
   
   less.load = function(lessId, req, load, config) {
-    if (!less.parse) {
-      require(['./lessc'], function(lessc) {
-        var parser = new lessc.Parser();
-        less.parse = function(less) {
-          var css;
-          parser.parse(less, function(err, tree) {
-            if (err)
-              throw err;
-            css = tree.toCSS();
-          });
-          //instant callback luckily
-          return css;
-        }
-        css.load(lessId, req, load, config, less.parse);
-      });
-    }
-    else
-      css.load(lessId, req, load, config, less.parse);
+    css.load(lessId, req, load, config, less.parse);
   }
   
   return less;
