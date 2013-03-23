@@ -175,7 +175,7 @@ if (typeof environment === "object" && ({}).toString.call(environment) === "[obj
     less.mode = 'rhino';
 } else if (typeof(window) === 'undefined') {
     // Node.js
-    less = exports || {},
+    less = typeof exports != 'undefined' ? exports : {},
     tree = require('./tree');
     less.mode = 'node';
 } else {
