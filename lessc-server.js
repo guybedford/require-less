@@ -1,7 +1,44 @@
 define(['./lessc'], function(less) {
-    var fs = require.nodeRequire('fs');
-    var path = require.nodeRequire('path');
 
+    var readFile = (function() {
+    	if (less.mode === 'node') {
+    		var fs = require.nodeRequire('fs');
+    		var path = require.nodeRequire('path');
+    		return function(pathname) {
+    			return fs.readFileSync(pathname, 'utf-8');
+    		};
+    	} else if (less.mode === 'rhino') {
+    		return function(pathname) {
+    			return readFile(pathname, 'UTF-8');
+    		};
+    	}
+    }());
+
+    var checkPath = (function() {
+    	if (less.mode === 'node') {
+    		var fs = require.nodeRequire('fs');
+    		var path = require.nodeRequire('path');
+    		return function(pathname, file) {
+    			try {
+    				pathname = path.join(pathname, file);
+    				fs.statSync(pathname);
+    				return pathname;
+    			} catch (e) {
+    				return null;
+    			}
+    		};
+    	} else if (less.mode === 'rhino') {
+    		return function(pathname, file) {
+    			var f = new java.io.File(pathname, file);
+    			if (f.isFile()) {
+    				return f.getPath();
+    			} else {
+    				return null;
+    			}
+    		};
+    	}
+    }());
+    
     less.Parser.importer = function (file, paths, callback, env) {
         var pathname, data;
 
@@ -11,13 +48,10 @@ define(['./lessc'], function(less) {
         paths.push('.');
 
         for (var i = 0; i < paths.length; i++) {
-            try {
-                pathname = path.join(paths[i], file);
-                fs.statSync(pathname);
-                break;
-            } catch (e) {
-                pathname = null;
-            }
+        	pathname = checkPath(paths[i], file);
+        	if (pathname != null) {
+        		break;
+        	}
         }
         
         paths = paths.slice(0, paths.length - 1);
@@ -48,7 +82,7 @@ define(['./lessc'], function(less) {
         };
 
         try {
-            data = fs.readFileSync(pathname, 'utf-8');
+        	readFile(pathname);
             parseFile(null, data);
         } catch (e) {
             parseFile(e);
