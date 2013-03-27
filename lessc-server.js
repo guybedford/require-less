@@ -1,5 +1,9 @@
 define(['./lessc'], function(less) {
 
+	if (['node', 'rhino'].indexOf(less.mode) == -1) {
+		throw new Error('Environment not supported by require-less builder: ' + less.mode);
+	}
+
     var readFile = (function() {
     	if (less.mode === 'node') {
     		var fs = require.nodeRequire('fs');
