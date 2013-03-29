@@ -21,15 +21,13 @@ define(['require-css/css-builder', './lessc-server', 'require'], function(css, l
   }
 
   less.normalize = function(name, normalize) {
-    if (name.substr(name.length - 1, 1) == '!')
-      name = name.substr(0, name.length - 1);
     if (name.substr(name.length - 5, 5) == '.less')
       name = name.substr(0, name.length - 5);
     return normalize(name);
   }
   
   less.load = function(name, req, load, config) {
-    css.load(name + '.less', req, load, config, parseLess);
+    css.load(name, req, load, config, parseLess);
   }
   
   less.write = function(pluginName, moduleName, write) {
