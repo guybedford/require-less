@@ -47,12 +47,14 @@ The RequireCSS build system is used to build LESS. The exact same options thus a
 
 Pending [r.js issue 289](https://github.com/jrburke/r.js/issues/289), the modules `require-css/css-builder` and `require-less/lessc` require a shallow exclude.
 
-Thus, add the following shallow exclusions at the module level:
+Thus, add the following shallow exclusions in the r.js build configuration for each module if using `modules` for a layered build, or at the base-level build configuration if doing a file-based build:
 
 ```javascript
 {
-  excludeShallow: ['require-css/css-builder', 'require-less/lessc-server']
+  excludeShallow: ['require-css/css-builder', 'require-less/lessc-server', 'require-less/lessc'],
+  include: ['require-css/css']
 }
 ```
 
+This shouldn't be necessary in future versions.
 
