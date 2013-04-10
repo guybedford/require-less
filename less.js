@@ -33,6 +33,9 @@ define(['css', 'require'], function(css, require) {
     });
   }
 
+  less.setBuffer = css.setBuffer;
+  less.addBuffer = css.addBuffer;
+
   
   less.load = function(lessId, req, load, config) {
     css.load(lessId, req, load, config, less.parse);
