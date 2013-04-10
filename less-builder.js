@@ -30,12 +30,14 @@ define(['require-css/css-builder', './lessc-server', 'require'], function(css, l
     css.load(name, req, load, config, parseLess);
   }
   
+  var _pluginName;
   less.write = function(pluginName, moduleName, write) {
+    _pluginName = pluginName;
     css.write(pluginName, moduleName, write, parseLess);
   }
   
   less.onLayerEnd = function(write, data) {
-    css.onLayerEnd(write, data, true);
+    css.onLayerEnd(write, data, _pluginName);
   }
   
   return less;
