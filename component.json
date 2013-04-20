@@ -3,6 +3,6 @@
   "version": "0.0.1",
   "main": "less.js",
   "dependencies": {
-    "css": "guybedford/require-css#0.0.1"
+    "require-css": "~0.0.1"
   }
 }
