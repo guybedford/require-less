@@ -4,5 +4,10 @@
     "dependencies": {
       "require-css": "guybedford/require-css/0.0.2"
     }
+  },
+  "jspm": {
+    "dependencies": {
+      "css": "0.0.3"
+    }
   }
 }
