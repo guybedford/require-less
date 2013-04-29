@@ -1,8 +1,15 @@
 {
+  "name": "require-less",
+  "version": "1.0.0"
   "volo": {
     "type": "directory",
     "dependencies": {
       "require-css": "guybedford/require-css/master"
+    }
+  },
+  "jam": {
+    "dependencies": {
+      "require-css": "1.0.x"
     }
   }
 }
