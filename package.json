@@ -1,6 +1,14 @@
 {
   "name": "require-less",
-  "version": "1.0.0"
+  "version": "0.0.4",
+  "author": "Guy Bedford",
+  "description": "LESS loader plugin for RequireJS with builds, based on RequireCSS",
+  "keywords": [
+    "requirejs",
+    "require",
+    "less",
+    "lesscss"
+  ],
   "volo": {
     "type": "directory",
     "dependencies": {
@@ -9,7 +17,14 @@
   },
   "jam": {
     "dependencies": {
-      "require-css": "1.0.x"
+      "require-css": "0.1.x"
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:goodybag/require-less.git"
+    }
+  ],
+  "github": "https://github.com/goodybag/require-less"
 }
