@@ -29,15 +29,21 @@ volo add guybedford/require-less
 
 Volo will automatically download [require-css](https://github.com/guybedford/require-css/zipball/master), which is a needed dependency.
 
-Then add the following [map configuration](http://requirejs.org/docs/api.html#config-map) in RequireJS:
+Then add the following package configuration in RequireJS:
 
 ```javascript
-map: {
-  '*': {
-    'css': 'require-css/css', // or whatever the path to require-css and require-less are
-    'less': 'require-less/less'
+packages: [
+  {
+    name: 'css',
+    location: 'require-css',
+    main: 'css'
+  },
+  {
+    name: 'less',
+    location: 'require-less',
+    main: 'less'
   }
-}
+]
 ```
 
 Builds
@@ -51,10 +57,12 @@ Thus, add the following shallow exclusions in the r.js build configuration for e
 
 ```javascript
 {
-  excludeShallow: ['require-css/css-builder', 'require-less/lessc-server', 'require-less/lessc'],
-  include: ['require-css/css']
+  excludeShallow: ['css/css-builder', 'less/lessc-server', 'less/lessc'],
+  include: ['css']
 }
 ```
 
 This shouldn't be necessary in future versions.
+
+Note also that the `css` module itself must be included at the beginning of the layer otherwise this will result in a separate HTTP request to CSS.
 

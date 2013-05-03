@@ -4,12 +4,18 @@
 <script>
   require.config({
     baseUrl: '.',
-    map: {
-      '*': {
-        'css': 'require-css/css',
-        'less': 'require-less/less'
-      } 
-    }
+    packages: [
+      {
+        name: 'css',
+        location: 'require-css',
+        main: 'css'
+      },
+      {
+        name: 'less',
+        location: 'require-less',
+        main: 'less'
+      }
+    ],
   });
 </script>
 

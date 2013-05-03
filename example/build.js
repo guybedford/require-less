@@ -3,21 +3,24 @@
   dir: 'www-built',
   baseUrl: '.',
   fileExclusionRegExp: /(^example)|(.git)$/,
-  map: {
-    '*': {
-      less: 'require-less/less',
-      css: 'require-css/css'
-    }
+  packages: [
+  {
+    name: 'css',
+    location: 'require-css',
+    main: 'css'
   },
-  paths: {
-    c: 'less'
-  },
+  {
+    name: 'less',
+    location: 'require-less',
+    main: 'less'
+  }
+  ],
   modules: [
     {
       name: 'core-components',
       create: true,
-      include: ['components/component', 'css'],
-      excludeShallow: ['require-css/css-builder', 'require-less/lessc-server']
+      include: ['css', 'components/component'],
+      excludeShallow: ['css/css-builder', 'less/lessc-server', 'less/lessc']
     },
     {
       name: 'app',
