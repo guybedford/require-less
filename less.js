@@ -30,7 +30,7 @@ define(['css', 'require'], function(css, require) {
           css = tree.toCSS();
         }
         catch(e) {
-          throw e;
+          throw new Error("LESS parse error: " + e.type + ", " + e.message);
         }
         //instant callback luckily for builds
         callback(css);
