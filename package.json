@@ -2,12 +2,12 @@
   "volo": {
     "type": "directory",
     "dependencies": {
-      "require-css": "guybedford/require-css/0.0.2"
+      "require-css": "guybedford/require-css/0.0.4"
     }
   },
   "jspm": {
     "dependencies": {
-      "css": "0.0.3"
+      "css": "0.0.4"
     }
   },
   "jam": {

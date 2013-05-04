@@ -1,8 +1,0 @@
-{
-  "name": "less",
-  "version": "0.0.3",
-  "main": "less.js",
-  "dependencies": {
-    "css": "guybedford/require-css#0.0.3"
-  }
-}
