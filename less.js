@@ -26,7 +26,12 @@ define(['css', 'require'], function(css, require) {
       parser.parse(less, function(err, tree) {
         if (err)
           throw err;
-        css = tree.toCSS();
+        try {
+          css = tree.toCSS();
+        }
+        catch(e) {
+          throw e;
+        }
         //instant callback luckily for builds
         callback(css);
       });
