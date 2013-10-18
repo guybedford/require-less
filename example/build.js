@@ -2,13 +2,8 @@
   appDir: 'www',
   dir: 'www-built',
   baseUrl: '.',
-  fileExclusionRegExp: /(^example)|(.git)$/,
+  fileExclusionRegExp: /(^example)|(.git)|node_modules$/,
   packages: [
-  {
-    name: 'css',
-    location: 'require-css',
-    main: 'css'
-  },
   {
     name: 'less',
     location: 'require-less',
@@ -19,8 +14,8 @@
     {
       name: 'core-components',
       create: true,
-      include: ['css', 'components/component'],
-      excludeShallow: ['css/css-builder', 'less/lessc-server', 'less/lessc']
+      include: ['components/component'],
+      exclude: ['less/normalize']
     },
     {
       name: 'app',
