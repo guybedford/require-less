@@ -46,10 +46,6 @@ define(['require', './normalize'], function(req, normalize) {
   var less = require.nodeRequire('less');
   var path = require.nodeRequire('path');
 
-  var parser = new less.Parser({
-    paths: [baseUrl]
-  });
-
   var layerBuffer = [];
   var lessBuffer = {};
 
@@ -83,6 +79,10 @@ define(['require', './normalize'], function(req, normalize) {
     var fileUrl = req.toUrl(name + '.less');
 
     //add to the buffer
+    var parser = new less.Parser({
+      paths: [baseUrl],
+      filename: fileUrl
+    });
     parser.parse('@import "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
       if (err) {
         return load.error(err);
