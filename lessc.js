@@ -1,5 +1,5 @@
 /*! 
- * LESS - Leaner CSS v1.5.0-b4 
+ * LESS - Leaner CSS v1.5.0 
  * http://lesscss.org 
  * 
  * Copyright (c) 2009-2013, Alexis Sellier <self@cloudhead.net> 
@@ -73,7 +73,8 @@ less.Parser = function Parser(env) {
         furthest,    // furthest index the parser has gone to
         chunks,      // chunkified input
         current,     // index of current chunk, in `input`
-        parser;
+        parser,
+        rootFilename = env && env.filename;
 
     // Top parser on an import tree must be sure there is one "env"
     // which will then be passed around by reference.
@@ -95,7 +96,7 @@ less.Parser = function Parser(env) {
             var fileParsedFunc = function (e, root, fullPath) {
                 parserImports.queue.splice(parserImports.queue.indexOf(path), 1); // Remove the path from the queue
 
-                var importedPreviously = fullPath in parserImports.files;
+                var importedPreviously = fullPath in parserImports.files || fullPath === rootFilename;
 
                 parserImports.files[fullPath] = root;                        // Store the root
 
@@ -1302,7 +1303,7 @@ less.Parser = function Parser(env) {
                     $(this.comments);
                     if (! $(',')) { break; }
                     if (s.condition) {
-                        error("Guards are only currently allowed on a single selector");
+                        error("Guards are only currently allowed on a single selector.");
                     }
                     $(this.comments);
                 }
@@ -1643,7 +1644,7 @@ less.Parser = function Parser(env) {
                 var a, b, index = i, condition;
 
                 if (a = $(this.condition)) {
-                    while ($(',') && (b = $(this.condition))) {
+                    while (peek(/^,\s*(not\s*)?\(/) && $(',') && (b = $(this.condition))) {
                         condition = new(tree.Condition)('or', condition || a, b, index);
                     }
                     return condition || a;
@@ -3624,9 +3625,16 @@ tree.Extend.prototype = {
     },
     findSelfSelectors: function (selectors) {
         var selfElements = [],
-            i;
+            i,
+            selectorElements;
 
         for(i = 0; i < selectors.length; i++) {
+            selectorElements = selectors[i].elements;
+            // duplicate the logic in genCSS function inside the selector node.
+            // future TODO - move both logics into the selector joiner visitor
+            if (i > 0 && selectorElements.length && selectorElements[0].combinator.value === "") {
+                selectorElements[0].combinator.value = ' ';
+            }
             selfElements = selfElements.concat(selectors[i].elements);
         }
 
