@@ -4,14 +4,6 @@ define(['require', './normalize'], function(req, normalize) {
   var baseParts = req.toUrl('base_url').split('/');
   baseParts[baseParts.length - 1] = '';
   var baseUrl = baseParts.join('/');
-
-  var nodePrint = function() {};
-  if (requirejs.tools)
-    requirejs.tools.useLib(function(req) {
-      req(['node/print'], function(_nodePrint) {
-        nodePrint = _nodePrint;
-      }, function(){});
-    });
   
   function compress(css) {
     if (typeof process !== "undefined" && process.versions && !!process.versions.node && require.nodeRequire) {
@@ -19,15 +11,15 @@ define(['require', './normalize'], function(req, normalize) {
         var csso = require.nodeRequire('csso');
         var csslen = css.length;
         css = csso.justDoIt(css);
-        nodePrint('Compressed CSS output to ' + Math.round(css.length / csslen * 100) + '%.');
+        console.log('Compressed CSS output to ' + Math.round(css.length / csslen * 100) + '%.');
         return css;
       }
       catch(e) {
-        nodePrint('Compression module not installed. Use "npm install csso -g" to enable.');
+        console.log('Compression module not installed. Use "npm install csso -g" to enable.');
         return css;
       }
     }
-    nodePrint('Compression not supported outside of nodejs environments.');
+    console.log('Compression not supported outside of nodejs environments.');
     return css;
   }
 
@@ -60,16 +52,6 @@ define(['require', './normalize'], function(req, normalize) {
   lessAPI.load = function(name, req, load, _config) {
     //store config
     config = config || _config;
-
-    if (config.modules) {
-      //run through the module list - the first one without a layer set is the current layer we are in
-      //allows to track the current layer number for layer-specific config
-      for (var i = 0; i < config.modules.length; i++)
-        if (config.modules[i].layer === undefined) {
-          curModule = i;
-          break;
-        }
-    }
     
     siteRoot = siteRoot || path.resolve(config.dir || path.dirname(config.out), config.siteRoot || '.') + '/';
 
@@ -111,19 +93,12 @@ define(['require', './normalize'], function(req, normalize) {
   }
   
   lessAPI.onLayerEnd = function(write, data) {
-    //separateCSS parameter set either globally or as a layer setting
-    var separateCSS = false;
-    if (config.separateCSS)
-      separateCSS = true;
-    if (typeof curModule == 'number' && config.modules[curModule].separateCSS !== undefined)
-      separateCSS = config.modules[curModule].separateCSS;
-    curModule = null;
     
     //calculate layer css
     var css = layerBuffer.join('');
     
-    if (separateCSS) {
-      nodePrint('Writing CSS! file: ' + data.name + '\n');
+    if (config.separateCSS) {
+      console.log('Writing CSS! file: ' + data.name + '\n');
       
       var outPath = config.appDir ? config.baseUrl + data.name + '.css' : config.out.replace(/\.js$/, '.css');
       
