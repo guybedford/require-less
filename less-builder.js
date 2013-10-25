@@ -125,7 +125,7 @@ define(['require', './normalize'], function(req, normalize) {
     if (separateCSS) {
       nodePrint('Writing CSS! file: ' + data.name + '\n');
       
-      var outPath = this.config.appDir ? this.config.baseUrl + data.name + '.css' : cssAPI.config.out.replace(/\.js$/, '.css');
+      var outPath = config.appDir ? config.baseUrl + data.name + '.css' : config.out.replace(/\.js$/, '.css');
       
       saveFile(outPath, compress(css));
     }
