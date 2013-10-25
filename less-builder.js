@@ -108,7 +108,7 @@ define(['require', './normalize'], function(req, normalize) {
       if (css == '')
         return;
       write(
-        "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.querySelector('head')[a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})\n"
+        "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})\n"
         + "('" + escape(compress(css)) + "');\n"
       );
     }
