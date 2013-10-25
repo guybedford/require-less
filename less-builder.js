@@ -106,18 +106,11 @@ define(['require', './normalize'], function(req, normalize) {
       return load();
     
     layerBuffer.push(lessBuffer[moduleName]);
-
-    var separateCSS = false;
-    if (config.separateCSS)
-      separateCSS = true;
-    if (typeof curModule == 'number' && config.modules[curModule].separateCSS !== undefined)
-      separateCSS = config.modules[curModule].separateCSS;
     
     write.asModule(pluginName + '!' + moduleName, 'define(function(){})');
   }
   
   lessAPI.onLayerEnd = function(write, data) {
-    firstWrite = true;
     //separateCSS parameter set either globally or as a layer setting
     var separateCSS = false;
     if (config.separateCSS)
@@ -133,22 +126,15 @@ define(['require', './normalize'], function(req, normalize) {
       nodePrint('Writing CSS! file: ' + data.name + '\n');
       
       var outPath = this.config.appDir ? this.config.baseUrl + data.name + '.css' : cssAPI.config.out.replace(/\.js$/, '.css');
-
-      //renormalize the css to the output path
-      var output = compress(css);
       
-      saveFile(outPath, output);
+      saveFile(outPath, compress(css));
     }
     else {
       if (css == '')
         return;
-      //write the injection and layer index into the layer
-      //prepare the css
-      css = escape(compress(css));
-      
       write(
         "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.querySelector('head')[a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})\n"
-        + "('" + css + "');\n"
+        + "('" + escape(compress(css)) + "');\n"
       );
     }
     
