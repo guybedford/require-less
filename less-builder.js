@@ -85,12 +85,12 @@ define(['require', './normalize'], function(req, normalize) {
       async: false,
       syncImport: true
     });
-    parser.parse('@import "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
+    parser.parse('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
       if (err) {
         return load.error(err);
       }
 
-      var css = tree.rules[0].root.toCSS();
+      var css = tree.toCSS();
 
       // normalize all imports relative to the siteRoot, itself relative to the output file / output dir
       lessBuffer[name] = normalize(css, fileUrl, siteRoot);
