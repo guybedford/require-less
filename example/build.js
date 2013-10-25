@@ -21,5 +21,8 @@
       name: 'app',
       exclude: ['core-components', 'less']
     }
-  ]
+  ],
+  paths: {
+    style: 'less-style'
+  }
 })

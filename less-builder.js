@@ -81,7 +81,9 @@ define(['require', './normalize'], function(req, normalize) {
     //add to the buffer
     var parser = new less.Parser({
       paths: [baseUrl],
-      filename: fileUrl
+      filename: fileUrl,
+      async: false,
+      syncImport: true
     });
     parser.parse('@import "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
       if (err) {
