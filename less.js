@@ -46,8 +46,6 @@ define(['require'], function(require) {
       curStyle.appendChild(document.createTextNode(css));
   }
 
-  var parser;
-
   lessAPI.load = function(lessId, req, load, config) {
     require(['./lessc', './normalize'], function(lessc, normalize) {
 
@@ -60,7 +58,7 @@ define(['require'], function(require) {
       var fileUrl = req.toUrl(lessId + '.less');
       fileUrl = normalize.absoluteURI(fileUrl, baseUrl);
 
-      parser = parser || new lessc.Parser(window.less);
+      var parser = new lessc.Parser(window.less);
 
       parser.parse('@import "' + fileUrl + '";', function(err, tree) {
         if (err)
