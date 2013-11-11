@@ -24,8 +24,6 @@ define(['require'], function(require) {
   pagePath[pagePath.length - 1] = '';
   pagePath = pagePath.join('/');
 
-  var baseUrl;
-
   // set initial default configuration
   window.less = window.less || {
     env: 'development'
@@ -49,18 +47,12 @@ define(['require'], function(require) {
   lessAPI.load = function(lessId, req, load, config) {
     require(['./lessc', './normalize'], function(lessc, normalize) {
 
-      if (!baseUrl) {
-        var baseParts = require.toUrl('base_url').split('/');
-        baseParts[baseParts.length - 1] = '';
-        baseUrl = normalize.absoluteURI(baseParts.join('/'), pagePath) + '/';
-      }
-
       var fileUrl = req.toUrl(lessId + '.less');
-      fileUrl = normalize.absoluteURI(fileUrl, baseUrl);
+      fileUrl = normalize.absoluteURI(fileUrl, pagePath);
 
       var parser = new lessc.Parser(window.less);
 
-      parser.parse('@import "' + fileUrl + '";', function(err, tree) {
+      parser.parse('@import (multiple) "' + fileUrl + '";', function(err, tree) {
         if (err)
           return load.error(err);
 
