@@ -53,6 +53,12 @@ Package configuration can also be used here alternatively.
 Builds
 ------
 
+Before running a build, install the LESS NodeJS module and csso for compression:
+
+```javascript
+  npm install less csso
+```
+
 The RequireCSS build system is used to build LESS. The exact same options thus apply.
 
 Example build configuration:
