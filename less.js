@@ -6,7 +6,7 @@ define(['require'], function(require) {
   
   if (typeof window == 'undefined') {
     lessAPI.load = function(n, r, load) { load(); }
-    return less;
+    return lessAPI;
   }
   
   lessAPI.normalize = function(name, normalize) {
