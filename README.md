@@ -90,6 +90,17 @@ To build into a separate CSS file:
 
 The `separateCSS` build option can then be used to create this CSS layer as a separate file. See the [RequireCSS documentation](https://github.com/) for more information.
 
+Compilation Options
+---
+
+Compilation options can be set on the `window.less` object in the browser, or with the `requireLESS` configuration option in the RequireJS config:
+
+```javascript
+  requireLESS: {
+    // ... custom LESS compiler options
+  }
+```
+
 License
 ---
 
