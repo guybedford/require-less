@@ -56,7 +56,7 @@ define(['require'], function(require) {
         if (err)
           return load.error(err);
 
-        lessAPI.inject(normalize(tree.toCSS(), fileUrl, pagePath));
+        lessAPI.inject(normalize(tree.toCSS(config.less), fileUrl, pagePath));
 
         setTimeout(load, 7);
       });
