@@ -93,11 +93,11 @@ The `separateCSS` build option can then be used to create this CSS layer as a se
 Compilation Options
 ---
 
-Compilation options can be set with the `requireLESS` configuration option in the RequireJS config:
+Compilation options can be set with the `less` configuration option in the RequireJS config:
 
 ```javascript
-  requireLESS: {
-    // ... custom LESS compiler options
+  less: {
+    // ... custom LESS compiler options ...
   }
 ```
 
