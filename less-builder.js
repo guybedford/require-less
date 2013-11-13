@@ -72,7 +72,7 @@ define(['require', './normalize'], function(req, normalize) {
         return load.error(err);
       }
 
-      var css = tree.toCSS();
+      var css = tree.toCSS(config.less);
 
       // normalize all imports relative to the siteRoot, itself relative to the output file / output dir
       lessBuffer[name] = normalize(css, fileUrl, siteRoot);
