@@ -93,7 +93,7 @@ The `separateCSS` build option can then be used to create this CSS layer as a se
 Compilation Options
 ---
 
-Compilation options can be set on the `window.less` object in the browser, or with the `requireLESS` configuration option in the RequireJS config:
+Compilation options can be set with the `requireLESS` configuration option in the RequireJS config:
 
 ```javascript
   requireLESS: {
