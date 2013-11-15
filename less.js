@@ -20,7 +20,7 @@ define(['require'], function(require) {
   
   var head = document.getElementsByTagName('head')[0];
 
-  var base = getElementsByTagName('base');
+  var base = document.getElementsByTagName('base');
   base = base && base[0];
   var pagePath = base || window.location.href.split('#')[0].split('/');
   if (!base) {
