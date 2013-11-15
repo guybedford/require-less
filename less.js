@@ -20,9 +20,13 @@ define(['require'], function(require) {
   
   var head = document.getElementsByTagName('head')[0];
 
-  var pagePath = window.location.href.split('#')[0].split('/');
-  pagePath[pagePath.length - 1] = '';
-  pagePath = pagePath.join('/');
+  var base = getElementsByTagName('base');
+  base = base && base[0];
+  var pagePath = base || window.location.href.split('#')[0].split('/');
+  if (!base) {
+    pagePath[pagePath.length - 1] = '';
+    pagePath = pagePath.join('/');
+  }
 
   // set initial default configuration
   window.less = window.less || {
