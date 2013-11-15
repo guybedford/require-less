@@ -21,12 +21,10 @@ define(['require'], function(require) {
   var head = document.getElementsByTagName('head')[0];
 
   var base = document.getElementsByTagName('base');
-  base = base && base[0];
-  var pagePath = base || window.location.href.split('#')[0].split('/');
-  if (!base) {
-    pagePath[pagePath.length - 1] = '';
-    pagePath = pagePath.join('/');
-  }
+  base = base && base[0] && base[0] && base[0].href;
+  var pagePath = (base || window.location.href.split('#')[0]).split('/');
+  pagePath[pagePath.length - 1] = '';
+  pagePath = pagePath.join('/');
 
   // set initial default configuration
   window.less = window.less || {
