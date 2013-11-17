@@ -22,6 +22,24 @@ define(['require', './normalize'], function(req, normalize) {
     console.log('Compression not supported outside of nodejs environments.');
     return css;
   }
+  function saveFile(path, data) {
+    if (typeof process !== "undefined" && process.versions && !!process.versions.node && require.nodeRequire) {
+      var fs = require.nodeRequire('fs');
+      fs.writeFileSync(path, data, 'utf8');
+    }
+    else {
+      var content = new java.lang.String(data);
+      var output = new java.io.BufferedWriter(new java.io.OutputStreamWriter(new java.io.FileOutputStream(path), 'utf-8'));
+  
+      try {
+        output.write(content, 0, content.length());
+        output.flush();
+      }
+      finally {
+        output.close();
+      }
+    }
+  }
 
   function escape(content) {
     return content.replace(/(["'\\])/g, '\\$1')
