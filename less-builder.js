@@ -1,5 +1,7 @@
 define(['require', './normalize'], function(req, normalize) {
   var lessAPI = {};
+
+  var isWindows = !!process.platform.match(/^win/);
   
   var baseParts = req.toUrl('base_url').split('/');
   baseParts[baseParts.length - 1] = '';
@@ -70,8 +72,12 @@ define(['require', './normalize'], function(req, normalize) {
   lessAPI.load = function(name, req, load, _config) {
     //store config
     config = config || _config;
-    
-    siteRoot = siteRoot || path.resolve(config.dir || path.dirname(config.out), config.siteRoot || '.') + '/';
+
+    if (!siteRoot) {
+      siteRoot = path.resolve(config.dir || path.dirname(config.out), config.siteRoot || '.') + '/';
+      if (isWindows)
+        siteRoot = siteRoot.replace(/\\/g, '/');
+    }
 
     if (name.match(absUrlRegEx))
       return load();
@@ -93,7 +99,7 @@ define(['require', './normalize'], function(req, normalize) {
       var css = tree.toCSS(config.less);
 
       // normalize all imports relative to the siteRoot, itself relative to the output file / output dir
-      lessBuffer[name] = normalize(css, fileUrl, siteRoot);
+      lessBuffer[name] = normalize(css, isWindows ? fileUrl.replace(/\\/g, '/') : fileUrl, siteRoot);
 
       load();
     });
