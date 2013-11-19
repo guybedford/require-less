@@ -22,7 +22,7 @@ define(['require'], function(require) {
 
   var base = document.getElementsByTagName('base');
   base = base && base[0] && base[0] && base[0].href;
-  var pagePath = (base || window.location.href.split('#')[0]).split('/');
+  var pagePath = (base || window.location.href.split('#')[0].split('?')[0]).split('/');
   pagePath[pagePath.length - 1] = '';
   pagePath = pagePath.join('/');
 
