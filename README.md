@@ -45,7 +45,7 @@ map: {
   '*': {
     'less': 'require-less/less' // path to less
   }
-{
+}
 ```
 
 Package configuration can also be used here alternatively.
