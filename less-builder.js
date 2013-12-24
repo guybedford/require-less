@@ -93,6 +93,7 @@ define(['require', './normalize'], function(req, normalize) {
     });
     parser.parse('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
       if (err) {
+        console.log(err + ' at ' + path.relative(baseUrl, err.filename) + ', line ' + err.line);
         return load.error(err);
       }
 
