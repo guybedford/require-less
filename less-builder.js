@@ -126,6 +126,8 @@ define(['require', './normalize'], function(req, normalize) {
       console.log('Writing CSS! file: ' + data.name + '\n');
       
       var outPath = config.appDir ? config.baseUrl + data.name + '.css' : config.out.replace(/\.js$/, '.css');
+
+      css = normalize(css, siteRoot, outPath);
       
       saveFile(outPath, compress(css));
     }
