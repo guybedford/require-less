@@ -89,7 +89,8 @@ define(['require', './normalize'], function(req, normalize) {
       paths: [baseUrl],
       filename: fileUrl,
       async: false,
-      syncImport: true
+      syncImport: true,
+      relativeUrls: config.less && config.less.relativeUrls
     });
     parser.parse('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
       if (err) {
