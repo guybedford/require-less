@@ -92,12 +92,12 @@ define(['require', './normalize'], function(req, normalize) {
     var fileUrl = req.toUrl(name + '.less');
 
     //add to the buffer
-    var parser = new less.Parser({
-      paths: [baseUrl],
-      filename: fileUrl,
-      async: false,
-      syncImport: true
-    });
+    var cfg = _config.less || {};
+    cfg.paths = [baseUrl];
+    cfg.filename = fileUrl;
+    cfg.async = false;
+    cfg.syncImport = true;
+    var parser = new less.Parser(cfg);
     parser.parse('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
       if (err) {
         console.log(err + ' at ' + path.relative(baseUrl, err.filename) + ', line ' + err.line);
