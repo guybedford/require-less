@@ -42,8 +42,7 @@ define(['require'], function(require) {
   }
 
   lessAPI.load = function(lessId, req, load, config) {
-    if (config.less)
-      window.less = config.less || {};
+    window.less = config.less || {};
     window.less.env = 'development';
 
     require(['./lessc', './normalize'], function(lessc, normalize) {
