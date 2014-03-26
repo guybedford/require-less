@@ -1,8 +1,6 @@
 require-less
 ===========
 
-_There may currently be a bug in this module with r.js 2.1.11. It is definitely working on 2.1.9. A bug fix will be posted soon (https://github.com/guybedford/require-less/issues/60)_.
-
 Optimizable LESS requiring with RequireJS
 
 Based on the ideas from [require-css module](https://github.com/guybedford/require-css), read the documentation there for further usage instructions.
