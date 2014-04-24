@@ -110,7 +110,7 @@ define(['require', './normalize'], function(req, normalize) {
       lessBuffer[name] = normalize(css, isWindows ? fileUrl.replace(/\\/g, '/') : fileUrl, siteRoot);
 
       load();
-    });
+    }, cfg);
   }
 
   var layerBuffer = [];
@@ -132,11 +132,16 @@ define(['require', './normalize'], function(req, normalize) {
     if (config.separateCSS) {
       console.log('Writing CSS! file: ' + data.name + '\n');
       
-      var outPath = config.appDir ? config.baseUrl + data.name + '.css' : config.out.replace(/\.js$/, '.css');
+      var outPath = config.dir ? path.resolve(config.dir, config.baseUrl, data.name + '.css') : config.out.replace(/(\.js)?$/, '.css');
+
+      if (fs.existsSync(outPath))
+        console.log('RequireLESS: Warning, separateCSS module path "' + outPath + '" already exists and is being replaced by the layer CSS.');
 
       css = normalize(css, siteRoot, outPath);
       
-      saveFile(outPath, compress(css));
+      process.nextTick(function() {
+        saveFile(outPath, compress(css));  
+      });
     }
     else {
       if (css == '')

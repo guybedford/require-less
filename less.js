@@ -59,7 +59,7 @@ define(['require'], function(require) {
         lessAPI.inject(normalize(tree.toCSS(config.less), fileUrl, pagePath));
 
         setTimeout(load, 7);
-      });
+      }, window.less);
 
     });
   }
