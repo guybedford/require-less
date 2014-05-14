@@ -117,7 +117,7 @@ define(['require', './normalize'], function(req, normalize) {
   
   lessAPI.write = function(pluginName, moduleName, write) {
     if (moduleName.match(absUrlRegEx))
-      return load();
+      return;
     
     layerBuffer.push(lessBuffer[moduleName]);
     
