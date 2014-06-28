@@ -1,0 +1,6 @@
+@import (less) "2.css";
+
+h1 {
+    color: @textcolor;
+    font-size: @font-size;
+}
