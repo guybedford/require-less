@@ -93,7 +93,7 @@ define(['require', './normalize'], function(req, normalize) {
 
     //add to the buffer
     var cfg = _config.less || {};
-    cfg.paths = [baseUrl];
+    cfg.paths = [baseUrl].concat(cfg.paths || []);
     cfg.filename = fileUrl;
     cfg.async = false;
     cfg.syncImport = true;
