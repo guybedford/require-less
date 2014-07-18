@@ -98,10 +98,12 @@ Compilation Options
 Compilation options can be set with the `less` configuration option in the RequireJS config:
 
 ```javascript
+requirejs.config({
   less: {
     // ... custom LESS compiler options ...
     // for example: relativeUrls: true
   }
+});
 ```
 
 License
