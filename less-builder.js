@@ -2,8 +2,11 @@ define(['require', './normalize'], function(req, normalize) {
   var lessAPI = {};
 
   var isWindows = !!process.platform.match(/^win/);
+  var normalizeWinPath = function(path) {
+    return isWindows ? path.replace(/\\/g, '/') : path;
+  }
   
-  var baseParts = req.toUrl('base_url').split('/');
+  var baseParts = normalizeWinPath(req.toUrl('base_url')).split('/');
   baseParts[baseParts.length - 1] = '';
   var baseUrl = baseParts.join('/');
   
@@ -82,14 +85,13 @@ define(['require', './normalize'], function(req, normalize) {
 
     if (!siteRoot) {
       siteRoot = path.resolve(config.dir || path.dirname(config.out), config.siteRoot || '.') + '/';
-      if (isWindows)
-        siteRoot = siteRoot.replace(/\\/g, '/');
+      siteRoot = normalizeWinPath(siteRoot);
     }
 
     if (name.match(absUrlRegEx))
       return load();
 
-    var fileUrl = req.toUrl(name + '.less');
+    var fileUrl = normalizeWinPath(req.toUrl(name + '.less'));
 
     //add to the buffer
     var cfg = _config.less || {};
@@ -107,7 +109,7 @@ define(['require', './normalize'], function(req, normalize) {
       var css = tree.toCSS(config.less);
 
       // normalize all imports relative to the siteRoot, itself relative to the output file / output dir
-      lessBuffer[name] = normalize(css, isWindows ? fileUrl.replace(/\\/g, '/') : fileUrl, siteRoot);
+      lessBuffer[name] = normalize(css, fileUrl, siteRoot);
 
       load();
     }, cfg);
@@ -133,6 +135,7 @@ define(['require', './normalize'], function(req, normalize) {
       console.log('Writing CSS! file: ' + data.name + '\n');
       
       var outPath = config.dir ? path.resolve(config.dir, config.baseUrl, data.name + '.css') : config.out.replace(/(\.js)?$/, '.css');
+      outPath = normalizeWinPath(outPath);
 
       if (fs.existsSync(outPath))
         console.log('RequireLESS: Warning, separateCSS module path "' + outPath + '" already exists and is being replaced by the layer CSS.');
