@@ -37,7 +37,7 @@ define(['require', './normalize'], function(req, normalize) {
   function saveFile(path, data) {
     if (typeof process !== "undefined" && process.versions && !!process.versions.node && require.nodeRequire) {
       var fs = require.nodeRequire('fs');
-      fs.appendFileSync(path, data, 'utf8');
+      fs.writeFileSync(path, data, 'utf8');
     }
     else {
       var content = new java.lang.String(data);
@@ -137,12 +137,13 @@ define(['require', './normalize'], function(req, normalize) {
       var outPath = config.dir ? path.resolve(config.dir, config.baseUrl, data.name + '.css') : config.out.replace(/(\.js)?$/, '.css');
       outPath = normalizeWinPath(outPath);
 
-      if (fs.existsSync(outPath))
-        console.log('RequireLESS: Warning, separateCSS module path "' + outPath + '" already exists and is being replaced by the layer CSS.');
-
       css = normalize(css, siteRoot, outPath);
       
       process.nextTick(function() {
+        if (fs.existsSync(outPath)) {
+          css = css + fs.readFileSync(outPath, {encoding: 'utf8'});
+        }
+
         saveFile(outPath, compress(css));  
       });
     }
