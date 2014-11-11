@@ -80,17 +80,6 @@ define(['require', './normalize'], function(req, normalize) {
   var absUrlRegEx = /^([^\:\/]+:\/)?\//;
 
   lessAPI.load = function(name, req, load, _config) {
-
-    //use global variable to combine plugin results with results of require-css plugin
-    if (!GLOBAL._requirejsCssData) {
-      GLOBAL._requirejsCssData = {
-        usedBy: {less: true},
-        css: ''
-      }
-    } else {
-      GLOBAL._requirejsCssData.usedBy.less = true;
-    }
-
     //store config
     config = config || _config;
 
@@ -133,6 +122,16 @@ define(['require', './normalize'], function(req, normalize) {
       return;
 
     layerBuffer.push(lessBuffer[moduleName]);
+    
+    //use global variable to combine plugin results with results of require-css plugin
+    if (!global._requirejsCssData) {
+      global._requirejsCssData = {
+        usedBy: {less: true},
+        css: ''
+      }
+    } else {
+      global._requirejsCssData.usedBy.less = true;
+    }
 
     write.asModule(pluginName + '!' + moduleName, 'define(function(){})');
   }
@@ -151,11 +150,11 @@ define(['require', './normalize'], function(req, normalize) {
       css = normalize(css, siteRoot, outPath);
 
       process.nextTick(function() {
-        if (GLOBAL._requirejsCssData) {
-          css = GLOBAL._requirejsCssData.css = css + GLOBAL._requirejsCssData.css;
-          delete GLOBAL._requirejsCssData.usedBy.less;
-          if (Object.keys(GLOBAL._requirejsCssData.usedBy).length === 0) {
-            delete GLOBAL._requirejsCssData;
+        if (global._requirejsCssData) {
+          css = global._requirejsCssData.css = css + global._requirejsCssData.css;
+          delete global._requirejsCssData.usedBy.less;
+          if (Object.keys(global._requirejsCssData.usedBy).length === 0) {
+            delete global._requirejsCssData;
           }
         }
 
