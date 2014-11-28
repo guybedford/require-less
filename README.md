@@ -1,8 +1,6 @@
 require-less
 ===========
 
-*New maintainers welcome*
-
 Optimizable LESS requiring with RequireJS
 
 Based on the ideas from [require-css module](https://github.com/guybedford/require-css), read the documentation there for further usage instructions.
