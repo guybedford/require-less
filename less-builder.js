@@ -99,20 +99,43 @@ define(['require', './normalize'], function(req, normalize) {
     cfg.filename = fileUrl;
     cfg.async = false;
     cfg.syncImport = true;
-    var parser = new less.Parser(cfg);
-    parser.parse('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
+
+    //make it compatible with v1 and v2
+    var generation = less.version[0];
+    var renderer;
+    var cssGetter;
+    if (generation === 1) {
+      //v1, use parser and toCSS
+      var parser = new less.Parser(cfg);
+      renderer = parser.parse.bind(parser);
+      cssGetter = function (tree) {
+        return tree.toCSS(config.less);
+      };
+    } else if (generation === 2) {
+      //v2, use render and output
+      renderer = function (input, cb) {
+        less.render(input, cfg, cb);
+      };
+      cssGetter = function (output) {
+        return output.css;
+      };
+    } else {
+      var err = 'unsuported less version ' + less.version.join('.');
+      console.log(err);
+      return load.error(err);
+    }
+
+    renderer('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function (err, output) {
       if (err) {
         console.log(err + ' at ' + path.relative(baseUrl, err.filename) + ', line ' + err.line);
         return load.error(err);
       }
-
-      var css = tree.toCSS(config.less);
-
+      var css = cssGetter(output);
       // normalize all imports relative to the siteRoot, itself relative to the output file / output dir
       lessBuffer[name] = normalize(css, fileUrl, siteRoot);
 
       load();
-    }, cfg);
+    });
   }
 
   var layerBuffer = [];
