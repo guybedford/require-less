@@ -66,13 +66,11 @@ define(['require'], function(require) {
         fileUrl += lessConfig.fileExt;
       fileUrl = normalize.absoluteURI(req.toUrl(fileUrl), pagePath);
 
-      var parser = new lessc.Parser(lessConfig);
-
-      parser.parse('@import (' + (lessConfig.importOption || 'multiple') + ') "' + fileUrl + '";', function(err, tree) {
+      lessc.render('@import (' + (lessConfig.importOption || 'multiple') + ') "' + fileUrl + '";', lessConfig, function(err, output) {
         if (err)
           return load.error(err);
 
-        lessAPI.inject(normalize(tree.toCSS(lessConfig), fileUrl, pagePath));
+        lessAPI.inject(normalize(output.css, fileUrl, pagePath));
 
         setTimeout(load, 7);
       }, lessConfig);
