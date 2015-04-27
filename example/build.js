@@ -3,11 +3,13 @@
   dir: 'www-built',
   baseUrl: '.',
   fileExclusionRegExp: /(^example)|(.git)|node_modules$/,
-  map: {
-    '*': {
-      less: 'require-less/less'
+  packages: [
+    {
+      name: 'less',
+      location: 'require-less',
+      main: 'less'
     }
-  },
+  ],
   modules: [
     {
       name: 'core-components',
