@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<!--script type='text/javascript' src='../lessc.js'></script-->
+<script type='text/javascript' src='lib/require.js'></script>
+<script>
+  require.config({
+    baseUrl: '.',
+    packages: [
+      {
+        name: 'less',
+        location: '..',
+        main: 'less'
+      }
+    ],
+    less: {
+        globalVars: {
+            textcolor: '#0c0',
+            background: '#002'
+        },
+        fileExt: '.css',
+        importOption: 'less'
+    }
+  });
+</script>
+
+<script>
+  require(['less!css/1'], function() {
+    document.getElementById("header").innerHTML = "Less styles applied!";
+  });
+</script>
+
+<body>
+<h1 id="header">test</h1>
+</body>
+</html>

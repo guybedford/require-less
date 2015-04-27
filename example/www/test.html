@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
 <script type='text/javascript' src='../../../require.js'></script>
+<!-- Use require.js from example-2 if necessary -->
+<!--script type='text/javascript' src='../../example-2/lib/require.js'></script-->
 <script>
   require.config({
     baseUrl: '.',
@@ -8,6 +10,7 @@
       {
         name: 'less',
         location: 'require-less',
+//        location: '../..',   // Use path to plugin if necessary
         main: 'less'
       }
     ],
@@ -19,9 +22,11 @@
 
 <script>
   require(['app'], function(app) {
+    document.getElementById('test').innerHTML = app;
   });
 </script>
 
 <body>
-<h1>test</h1>
+<h1 id="test">test</h1>
 </body>
+</html>

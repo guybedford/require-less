@@ -42,24 +42,38 @@ define(['require'], function(require) {
   }
 
   lessAPI.load = function(lessId, req, load, config) {
-    window.less = config.less || {};
-    window.less.env = 'development';
+    var defaultConfig = {};
+    var lessConfig = config ? (config.less || config) : defaultConfig;
+    if (! ('env' in lessConfig))
+      lessConfig.env = 'development';
+    var globalLess = window.less;
+    if (! globalLess)
+        window.less = lessConfig;
+    else if (! globalLess.Parser) {
+        if (lessConfig === defaultConfig)
+          lessConfig = globalLess;
+        globalLess = null;
+    }
 
-    require(['./lessc', './normalize'], function(lessc, normalize) {
+    require(globalLess ? ['./normalize'] : ['./normalize', './lessc'], function(normalize, lessc) {
+      if (! lessc)
+        lessc = globalLess;
 
-      var fileUrl = req.toUrl(lessId + '.less');
-      fileUrl = normalize.absoluteURI(fileUrl, pagePath);
+      if (! ("fileExt" in lessConfig))
+        lessConfig.fileExt = ".less";
+      var fileUrl = lessId;
+      if (fileUrl.substring(fileUrl.length - 4) !== ".css" && lessConfig.fileExt)
+        fileUrl += lessConfig.fileExt;
+      fileUrl = normalize.absoluteURI(req.toUrl(fileUrl), pagePath);
 
-      var parser = new lessc.Parser(window.less);
-
-      parser.parse('@import (multiple) "' + fileUrl + '";', function(err, tree) {
+      lessc.render('@import (' + (lessConfig.importOption || 'multiple') + ') "' + fileUrl + '";', lessConfig, function(err, output) {
         if (err)
           return load.error(err);
 
-        lessAPI.inject(normalize(tree.toCSS(config.less), fileUrl, pagePath));
+        lessAPI.inject(normalize(output.css, fileUrl, pagePath));
 
         setTimeout(load, 7);
-      }, window.less);
+      }, lessConfig);
 
     });
   }
