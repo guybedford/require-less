@@ -107,7 +107,9 @@ define(['require', './normalize'], function(req, normalize) {
     if (generation === 1) {
       //v1, use parser and toCSS
       var parser = new less.Parser(cfg);
-      renderer = parser.parse.bind(parser);
+      renderer = function (input, cb) {
+        parser.parse.call(parser, input, cb, cfg);
+      };
       cssGetter = function (tree) {
         return tree.toCSS(config.less);
       };
@@ -145,7 +147,7 @@ define(['require', './normalize'], function(req, normalize) {
       return;
 
     layerBuffer.push(lessBuffer[moduleName]);
-    
+
     //use global variable to combine plugin results with results of require-css plugin
     if (!global._requirejsCssData) {
       global._requirejsCssData = {
