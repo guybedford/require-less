@@ -31,6 +31,15 @@ URIs can be made relative to the individual LESS files with the global LESS conf
 <script>window.less = { relativeUrls: true }</script>
 ```
 
+Avoid caching
+---
+
+You can avoid caching by adding random "_t" parameter to URLs of less files. You can do this by adding next configuration option:
+
+```html
+<script>window.less = { avoidCaching: true }</script>
+```
+
 Installation and Setup
 ----------------------
 
