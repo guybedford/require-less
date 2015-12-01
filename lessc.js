@@ -7742,6 +7742,10 @@ function loadFile(originalHref, currentFileInfo, callback, env, modifyVars) {
         return;
     }
 
+    if (less.avoidCaching) {
+        href = href + (href.indexOf("?") === -1 ? "?" : "&") + "_t=" + (Math.random() * Math.pow(10, 16));
+    }
+
     doXHR(href, env.mime, function (data, lastModified) {
         // per file cache
         fileCache[href] = data;
