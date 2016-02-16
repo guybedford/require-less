@@ -11,6 +11,10 @@ define(['require', './normalize'], function(req, normalize) {
   var baseUrl = baseParts.join('/');
 
   function compress(css) {
+    if (config.optimizeCss == 'none') {
+      return css;
+    }
+    
     if (typeof process !== "undefined" && process.versions && !!process.versions.node && require.nodeRequire) {
       try {
         var csso = require.nodeRequire('csso');
