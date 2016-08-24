@@ -50,13 +50,36 @@ define(['require'], function(require) {
       var fileUrl = req.toUrl(lessId + '.less');
       fileUrl = normalize.absoluteURI(fileUrl, pagePath);
 
-      var parser = new lessc.Parser(window.less);
+      //make it compatible with v1 and v2
+      var generation = (lessc.version || [1])[0];
+      var renderer;
+      var cssGetter;
+      if (generation === 1) {
+        //v1, use parser and toCSS
+        var parser = new lessc.Parser(window.less);
+        renderer = function (input, cb) {
+          parser.parse.call(parser, input, cb, window.less);
+        };
+        cssGetter = function (tree) {
+          return tree.toCSS(config.less);
+        };
+      } else if (generation >= 2) {
+        //v2 or newer, use render and output
+        renderer = function (input, cb) {
+          lessc.render(input, window.less, cb);
+        };
+        cssGetter = function (output) {
+          return output.css;
+        };
+      }
 
-      parser.parse('@import (multiple) "' + fileUrl + '";', function(err, tree) {
-        if (err)
+      renderer('@import (multiple) "' + fileUrl + '";', function(err, output) {
+        if (err) {
+          console.log(err + ' at ' + fileUrl + ', line ' + err.line);
           return load.error(err);
-
-        lessAPI.inject(normalize(tree.toCSS(config.less), fileUrl, pagePath));
+        }
+        var css = cssGetter(output);
+        lessAPI.inject(normalize(css, fileUrl, pagePath));
 
         setTimeout(load, 7);
       }, window.less);

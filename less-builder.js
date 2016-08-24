@@ -113,18 +113,14 @@ define(['require', './normalize'], function(req, normalize) {
       cssGetter = function (tree) {
         return tree.toCSS(config.less);
       };
-    } else if (generation === 2) {
-      //v2, use render and output
+    } else if (generation >= 2) {
+      //v2 or newer, use render and output
       renderer = function (input, cb) {
         less.render(input, cfg, cb);
       };
       cssGetter = function (output) {
         return output.css;
       };
-    } else {
-      var err = 'unsuported less version ' + less.version.join('.');
-      console.log(err);
-      return load.error(err);
     }
 
     renderer('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function (err, output) {
