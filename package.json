@@ -1,4 +1,45 @@
 {
+  "name": "requirejs-less",
+  "description": "LESS loader plugin for RequireJS with builds, based on RequireCSS",
+  "version": "0.1.6",
+  "license": "MIT",
+  "homepage": "https://github.com/guybedford/require-less",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guybedford/require-less.git"
+  },
+  "bugs": {
+    "url": "https://github.com/guybedford/require-less/issues",
+    "email": "guybedford@gmail.com"
+  },
+  "author": {
+    "name": "Guy Bedford",
+    "email": "guybedford@gmail.com",
+    "url": "http://twitter.com/guybedford"
+  },
+  "keywords": [
+    "require",
+    "requirejs",
+    "amd",
+    "less"
+  ],
+  "engines": {
+    "node": ">=0.8"
+  },
+  "dependencies": {
+    "less": "~2.7.1"
+  },
+  "devDependencies": {
+    "ncp": "~2.0.0",
+    "phantomjs-prebuilt": "~2.1.12"
+  },
+  "scripts": {
+    "start": "node scripts/serve",
+    "test": "npm run build && npm run build:tests && npm run test:browser",
+    "build": "node scripts/build",
+    "build:tests": "node scripts/build-tests",
+    "test:browser": "phantomjs scripts/test-browser.js"
+  },
   "volo": {
     "type": "directory"
   }

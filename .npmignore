@@ -1,0 +1,11 @@
+.git
+.gitignore
+.editorconfig
+.idea
+.jshintrc
+.npmignore
+.vscode
+example
+node_modules
+npm-debug.log
+test
