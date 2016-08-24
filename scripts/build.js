@@ -7,7 +7,5 @@ ncp(source, target, function (error) {
   if (error) {
     console.error(error.message);
     process.exit(1);
-  } else {
-    process.exit(0);
   }
 });

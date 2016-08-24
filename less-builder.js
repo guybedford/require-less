@@ -4,23 +4,24 @@ define(['require', './normalize'], function(req, normalize) {
   var isWindows = !!process.platform.match(/^win/);
   var normalizeWinPath = function(path) {
     return isWindows ? path.replace(/\\/g, '/') : path;
-  }
+  };
 
   var baseParts = normalizeWinPath(req.toUrl('base_url')).split('/');
   baseParts[baseParts.length - 1] = '';
   var baseUrl = baseParts.join('/');
 
   function compress(css) {
+    var csso, csslen;
     if (typeof process !== "undefined" && process.versions && !!process.versions.node && require.nodeRequire) {
       try {
-        var csso = require.nodeRequire('csso');
+        csso = require.nodeRequire('csso');
       }
       catch(e) {
         console.log('Compression module not installed. Use "npm install csso -g" to enable.');
         return css;
       }
       try {
-        var csslen = css.length;
+        csslen = css.length;
         css = csso.justDoIt(css);
         console.log('Compressed CSS output to ' + Math.round(css.length / csslen * 100) + '%.');
         return css;
@@ -75,7 +76,7 @@ define(['require', './normalize'], function(req, normalize) {
     if (name.substr(name.length - 5, 5) == '.less')
       name = name.substr(0, name.length - 5);
     return normalize(name);
-  }
+  };
 
   var absUrlRegEx = /^([^\:\/]+:\/)?\//;
 
@@ -134,9 +135,7 @@ define(['require', './normalize'], function(req, normalize) {
 
       load();
     });
-  }
-
-  var layerBuffer = [];
+  };
 
   lessAPI.write = function(pluginName, moduleName, write) {
     if (moduleName.match(absUrlRegEx))
@@ -149,13 +148,13 @@ define(['require', './normalize'], function(req, normalize) {
       global._requirejsCssData = {
         usedBy: {less: true},
         css: ''
-      }
+      };
     } else {
       global._requirejsCssData.usedBy.less = true;
     }
 
     write.asModule(pluginName + '!' + moduleName, 'define(function(){})');
-  }
+  };
 
   lessAPI.onLayerEnd = function(write, data) {
 
@@ -183,17 +182,17 @@ define(['require', './normalize'], function(req, normalize) {
       });
     }
     else {
-      if (css == '')
+      if (css === '')
         return;
       write(
-        "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})\n"
-        + "('" + escape(compress(css)) + "');\n"
+        "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})\n" +
+        "('" + escape(compress(css)) + "');\n"
       );
     }
 
     //clear layer buffer for next layer
     layerBuffer = [];
-  }
+  };
 
   return lessAPI;
 });

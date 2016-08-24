@@ -35,7 +35,8 @@
   },
   "scripts": {
     "start": "node scripts/serve",
-    "test": "npm run build && npm run build:tests && npm run test:browser",
+    "test": "npm run lint && npm run build && npm run build:tests && npm run test:browser",
+    "lint": "jshint less.js less-builder.js normalize.js scripts/*.js",
     "build": "node scripts/build",
     "build:tests": "node scripts/build-tests",
     "test:browser": "phantomjs scripts/test-browser.js"

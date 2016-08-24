@@ -36,7 +36,7 @@ function run(directories) {
             console.log('');
             run.call(null, directories);
           } else {
-            if (++retries === 6000) {
+            if (++retries === 100) {
               clearInterval(interval);
               failed = true;
               console.error('Testing timed out.');

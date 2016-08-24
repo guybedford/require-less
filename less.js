@@ -5,7 +5,7 @@ define(['require'], function(require) {
   lessAPI.pluginBuilder = './less-builder';
   
   if (typeof window == 'undefined') {
-    lessAPI.load = function(n, r, load) { load(); }
+    lessAPI.load = function(n, r, load) { load(); };
     return lessAPI;
   }
   
@@ -16,7 +16,7 @@ define(['require'], function(require) {
     name = normalize(name);
 
     return name;
-  }
+  };
   
   var head = document.getElementsByTagName('head')[0];
 
@@ -39,7 +39,7 @@ define(['require'], function(require) {
       curStyle.styleSheet.cssText += css;
     else
       curStyle.appendChild(document.createTextNode(css));
-  }
+  };
 
   lessAPI.load = function(lessId, req, load, config) {
     window.less = config.less || {};
@@ -85,7 +85,7 @@ define(['require'], function(require) {
       }, window.less);
 
     });
-  }
+  };
   
   return lessAPI;
 });
