@@ -30,8 +30,13 @@
     "less": "~2.7.1"
   },
   "devDependencies": {
+    "connect": "~3.4.1",
+    "cors": "~2.8.0",
+    "morgan": "~1.7.0",
     "ncp": "~2.0.0",
-    "phantomjs-prebuilt": "~2.1.12"
+    "phantomjs-prebuilt": "~2.1.12",
+    "serve-index": "~1.8.0",
+    "serve-static": "~1.11.1"
   },
   "scripts": {
     "start": "node scripts/serve",
