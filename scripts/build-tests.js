@@ -25,8 +25,7 @@ function build(directories) {
 }
 
 build([
-  'less1',
-  'less1-separate-css',
-  'less2',
-  'less2-separate-css',
+  'support-less-v1',
+  'support-less-v2',
+  'support-separate-css'
 ]);

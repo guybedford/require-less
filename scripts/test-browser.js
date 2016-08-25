@@ -7,9 +7,7 @@ var cwd = require('fs').workingDirectory,
 page.onConsoleMessage = function (message, line, source) {
   if (verbose) {
     console.log(message);
-    if (source) {
-      console.log('  (' + source + ', line ' + line + ')');
-    }
+    source && console.log('  (' + source + ', line ' + line + ')');
   }
 };
 
@@ -58,8 +56,7 @@ function run(directories) {
 }
 
 run([
-  'less1',
-  'less1-separate-css',
-  'less2',
-  'less2-separate-css',
+  'support-less-v1',
+  'support-less-v2',
+  'support-separate-css'
 ]);
