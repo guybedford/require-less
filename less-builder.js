@@ -107,22 +107,20 @@ define(['require', './normalize'], function(req, normalize) {
     if (generation === 1) {
       //v1, use parser and toCSS
       var parser = new less.Parser(cfg);
-      renderer = parser.parse.bind(parser);
+      renderer = function (input, cb) {
+        parser.parse.call(parser, input, cb, cfg);
+      };
       cssGetter = function (tree) {
         return tree.toCSS(config.less);
       };
-    } else if (generation === 2) {
-      //v2, use render and output
+    } else if (generation >= 2) {
+      //v2 or newer, use render and output
       renderer = function (input, cb) {
         less.render(input, cfg, cb);
       };
       cssGetter = function (output) {
         return output.css;
       };
-    } else {
-      var err = 'unsuported less version ' + less.version.join('.');
-      console.log(err);
-      return load.error(err);
     }
 
     renderer('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function (err, output) {
@@ -145,7 +143,7 @@ define(['require', './normalize'], function(req, normalize) {
       return;
 
     layerBuffer.push(lessBuffer[moduleName]);
-    
+
     //use global variable to combine plugin results with results of require-css plugin
     if (!global._requirejsCssData) {
       global._requirejsCssData = {
