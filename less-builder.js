@@ -12,6 +12,9 @@ define(['require', './normalize'], function(req, normalize) {
 
   function compress(css) {
     var csso, csslen;
+    if (config.optimizeCss == 'none') {
+      return css;
+    }
     if (typeof process !== "undefined" && process.versions && !!process.versions.node && require.nodeRequire) {
       try {
         csso = require.nodeRequire('csso');
