@@ -34,10 +34,10 @@ define(function() {
   
   // regular expression for removing double slashes
   // eg http://www.example.com//my///url/here -> http://www.example.com/my/url/here
-  var slashes = /([^:])\/+/g
+  var slashes = /([^:])\/+/g;
   var removeDoubleSlashes = function(uri) {
     return uri.replace(slashes, '$1/');
-  }
+  };
 
   // given a relative URI, and two absolute base URIs, convert it from one base to another
   var protocolRegEx = /[^\:\/]*:\/\/([^\/])*/;
@@ -56,7 +56,7 @@ define(function() {
     else {
       return relativeURI(absoluteURI(uri, fromBase), toBase);
     }
-  };
+  }
   
   // given a relative URI, calculate the absolute URI
   function absoluteURI(uri, base) {
@@ -71,15 +71,16 @@ define(function() {
     var uriParts = uri.split('/');
     
     baseParts.pop();
-    
-    while (curPart = uriParts.shift())
+
+    var curPart;
+    while (!!(curPart = uriParts.shift()))
       if (curPart == '..')
         baseParts.pop();
       else
         baseParts.push(curPart);
     
     return baseParts.join('/');
-  };
+  }
 
 
   // given an absolute URI, calculate the relative URI
@@ -89,7 +90,7 @@ define(function() {
     var baseParts = base.split('/');
     baseParts.pop();
     base = baseParts.join('/') + '/';
-    i = 0;
+    var i = 0;
     while (base.substr(i, 1) == uri.substr(i, 1))
       i++;
     while (base.substr(i, 1) != '/')
@@ -100,16 +101,17 @@ define(function() {
     // each base folder difference is thus a backtrack
     baseParts = base.split('/');
     var uriParts = uri.split('/');
-    out = '';
+    var out = '';
     while (baseParts.shift())
       out += '../';
     
     // finally add uri parts
-    while (curPart = uriParts.shift())
+    var curPart;
+    while (!!(curPart = uriParts.shift()))
       out += curPart + '/';
     
     return out.substr(0, out.length - 1);
-  };
+  }
   
   var normalizeCSS = function(source, fromBase, toBase) {
 
@@ -117,9 +119,9 @@ define(function() {
     toBase = removeDoubleSlashes(toBase);
 
     var urlRegEx = /@import\s*("([^"]*)"|'([^']*)')|url\s*\(\s*(\s*"([^"]*)"|'([^']*)'|[^\)]*\s*)\s*\)/ig;
-    var result, url, source;
+    var result, url;
 
-    while (result = urlRegEx.exec(source)) {
+    while (!!(result = urlRegEx.exec(source))) {
       url = result[3] || result[2] || result[5] || result[6] || result[4];
       var newUrl;
       newUrl = convertURIBase(url, fromBase, toBase);

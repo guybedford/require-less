@@ -1,1 +1,7 @@
+.idea
+.vscode
 example/www-built
+/lessc.js
+node_modules
+npm-debug.log
+test/*/out
