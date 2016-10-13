@@ -21,7 +21,7 @@ define(['require', './normalize'], function(req, normalize) {
       }
       try {
         var csslen = css.length;
-        css = csso.justDoIt(css);
+        css = csso.minify(css).css;
         console.log('Compressed CSS output to ' + Math.round(css.length / csslen * 100) + '%.');
         return css;
       }
@@ -99,14 +99,13 @@ define(['require', './normalize'], function(req, normalize) {
     cfg.filename = fileUrl;
     cfg.async = false;
     cfg.syncImport = true;
-    var parser = new less.Parser(cfg);
-    parser.parse('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
+    less.render('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', cfg, function(err, output) {
       if (err) {
         console.log(err + ' at ' + path.relative(baseUrl, err.filename) + ', line ' + err.line);
         return load.error(err);
       }
 
-      var css = tree.toCSS(config.less);
+      var css = output.css;
 
       // normalize all imports relative to the siteRoot, itself relative to the output file / output dir
       lessBuffer[name] = normalize(css, fileUrl, siteRoot);
