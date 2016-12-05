@@ -88,7 +88,12 @@ define(['require', './normalize'], function(req, normalize) {
     config = config || _config;
 
     if (!siteRoot) {
-      siteRoot = path.resolve(config.dir || path.dirname(config.out), config.siteRoot || '.') + '/';
+      siteRoot = path.resolve(
+        config.dir || path.dirname(
+          typeof config.out === 'string' ? config.out : ''
+        ),
+        config.siteRoot || '.'
+      ) + '/';
       siteRoot = normalizeWinPath(siteRoot);
     }
 
