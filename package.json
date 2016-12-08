@@ -27,7 +27,7 @@
     "node": ">=0.8"
   },
   "dependencies": {
-    "less": "~2.7.1"
+    "less": "2"
   },
   "devDependencies": {
     "connect": "~3.4.1",
