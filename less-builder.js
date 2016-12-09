@@ -25,7 +25,11 @@ define(['require', './normalize'], function(req, normalize) {
       }
       try {
         csslen = css.length;
-        css = csso.minify(css).css;
+        if (typeof csso.minify === 'function') {
+          css = csso.minify(css).css;
+        } else {
+          css = csso.justDoIt(css);
+        }
         console.log('Compressed CSS output to ' + Math.round(css.length / csslen * 100) + '%.');
         return css;
       }
