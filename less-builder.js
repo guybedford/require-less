@@ -4,24 +4,32 @@ define(['require', './normalize'], function(req, normalize) {
   var isWindows = !!process.platform.match(/^win/);
   var normalizeWinPath = function(path) {
     return isWindows ? path.replace(/\\/g, '/') : path;
-  }
+  };
 
   var baseParts = normalizeWinPath(req.toUrl('base_url')).split('/');
   baseParts[baseParts.length - 1] = '';
   var baseUrl = baseParts.join('/');
 
   function compress(css) {
+    var csso, csslen;
+    if (config.optimizeCss == 'none') {
+      return css;
+    }
     if (typeof process !== "undefined" && process.versions && !!process.versions.node && require.nodeRequire) {
       try {
-        var csso = require.nodeRequire('csso');
+        csso = require.nodeRequire('csso');
       }
       catch(e) {
         console.log('Compression module not installed. Use "npm install csso -g" to enable.');
         return css;
       }
       try {
-        var csslen = css.length;
-        css = csso.justDoIt(css);
+        csslen = css.length;
+        if (typeof csso.minify === 'function') {
+          css = csso.minify(css).css;
+        } else {
+          css = csso.justDoIt(css);
+        }
         console.log('Compressed CSS output to ' + Math.round(css.length / csslen * 100) + '%.');
         return css;
       }
@@ -75,7 +83,7 @@ define(['require', './normalize'], function(req, normalize) {
     if (name.substr(name.length - 5, 5) == '.less')
       name = name.substr(0, name.length - 5);
     return normalize(name);
-  }
+  };
 
   var absUrlRegEx = /^([^\:\/]+:\/)?\//;
 
@@ -84,7 +92,12 @@ define(['require', './normalize'], function(req, normalize) {
     config = config || _config;
 
     if (!siteRoot) {
-      siteRoot = path.resolve(config.dir || path.dirname(config.out), config.siteRoot || '.') + '/';
+      siteRoot = path.resolve(
+        config.dir || path.dirname(
+          typeof config.out === 'string' ? config.out : ''
+        ),
+        config.siteRoot || '.'
+      ) + '/';
       siteRoot = normalizeWinPath(siteRoot);
     }
 
@@ -95,46 +108,65 @@ define(['require', './normalize'], function(req, normalize) {
 
     //add to the buffer
     var cfg = _config.less || {};
-    cfg.paths = [baseUrl];
+    cfg.paths = [baseUrl].concat(cfg.paths || []);
     cfg.filename = fileUrl;
     cfg.async = false;
     cfg.syncImport = true;
-    var parser = new less.Parser(cfg);
-    parser.parse('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function(err, tree) {
+
+    //make it compatible with v1 and v2
+    var generation = less.version[0];
+    var renderer;
+    var cssGetter;
+    if (generation === 1) {
+      //v1, use parser and toCSS
+      var parser = new less.Parser(cfg);
+      renderer = function (input, cb) {
+        parser.parse.call(parser, input, cb, cfg);
+      };
+      cssGetter = function (tree) {
+        return tree.toCSS(config.less);
+      };
+    } else if (generation >= 2) {
+      //v2 or newer, use render and output
+      renderer = function (input, cb) {
+        less.render(input, cfg, cb);
+      };
+      cssGetter = function (output) {
+        return output.css;
+      };
+    }
+
+    renderer('@import (multiple) "' + path.relative(baseUrl, fileUrl) + '";', function (err, output) {
       if (err) {
         console.log(err + ' at ' + path.relative(baseUrl, err.filename) + ', line ' + err.line);
         return load.error(err);
       }
-
-      var css = tree.toCSS(config.less);
-
+      var css = cssGetter(output);
       // normalize all imports relative to the siteRoot, itself relative to the output file / output dir
       lessBuffer[name] = normalize(css, fileUrl, siteRoot);
 
       load();
-    }, cfg);
-  }
-
-  var layerBuffer = [];
+    });
+  };
 
   lessAPI.write = function(pluginName, moduleName, write) {
     if (moduleName.match(absUrlRegEx))
       return;
 
     layerBuffer.push(lessBuffer[moduleName]);
-    
+
     //use global variable to combine plugin results with results of require-css plugin
     if (!global._requirejsCssData) {
       global._requirejsCssData = {
         usedBy: {less: true},
         css: ''
-      }
+      };
     } else {
       global._requirejsCssData.usedBy.less = true;
     }
 
     write.asModule(pluginName + '!' + moduleName, 'define(function(){})');
-  }
+  };
 
   lessAPI.onLayerEnd = function(write, data) {
 
@@ -162,17 +194,17 @@ define(['require', './normalize'], function(req, normalize) {
       });
     }
     else {
-      if (css == '')
+      if (css === '')
         return;
       write(
-        "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})\n"
-        + "('" + escape(compress(css)) + "');\n"
+        "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})\n" +
+        "('" + escape(compress(css)) + "');\n"
       );
     }
 
     //clear layer buffer for next layer
     layerBuffer = [];
-  }
+  };
 
   return lessAPI;
 });

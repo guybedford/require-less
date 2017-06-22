@@ -1,0 +1,7 @@
+{
+  "browser": true,
+  "expr": true,
+  "node": true,
+  "predef": ["define", "phantom", "java"],
+  "strict": "implied"
+}
