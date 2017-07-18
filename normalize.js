@@ -42,6 +42,20 @@ define(function() {
   // given a relative URI, and two absolute base URIs, convert it from one base to another
   var protocolRegEx = /[^\:\/]*:\/\/([^\/])*/;
   var absUrlRegEx = /^(\/|data:)/;
+
+  // given a URI, remove '..' if possible
+  function normalizeURI(uri) {
+      var val= uri.split('/').reduce(function(prev, curr, idx) {
+          if (curr !== '..' || idx === 0) {
+              prev.push(curr);
+          } else {
+              prev.pop();
+          }
+          return prev;
+      }, []).join('/');
+      return val;
+  }
+
   function convertURIBase(uri, fromBase, toBase) {
     if (uri.match(absUrlRegEx) || uri.match(protocolRegEx))
       return uri;
@@ -115,8 +129,8 @@ define(function() {
   
   var normalizeCSS = function(source, fromBase, toBase) {
 
-    fromBase = removeDoubleSlashes(fromBase);
-    toBase = removeDoubleSlashes(toBase);
+    fromBase = normalizeURI(removeDoubleSlashes(fromBase));
+    toBase = normalizeURI(removeDoubleSlashes(toBase));
 
     var urlRegEx = /@import\s*("([^"]*)"|'([^']*)')|url\s*\(\s*(\s*"([^"]*)"|'([^']*)'|[^\)]*\s*)\s*\)/ig;
     var result, url;
