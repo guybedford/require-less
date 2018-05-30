@@ -79,7 +79,13 @@ define(['require'], function(require) {
           return load.error(err);
         }
         var css = cssGetter(output);
-        lessAPI.inject(normalize(css, fileUrl, pagePath));
+
+        if (config.less.inject !== false) {
+          lessAPI.inject(normalize(css, fileUrl, pagePath));
+          setTimeout(load, 7);
+        } else {
+          load(css);
+        }
 
         setTimeout(load, 7);
       }, window.less);
