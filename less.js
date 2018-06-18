@@ -87,7 +87,7 @@ define(function(require) {
 
         var css = cssGetter(output);
 
-        if (config.less.inject !== false) {
+        if (config.less.component !== true) {
           lessAPI.inject(normalize(css, fileUrl, pagePath));
           setTimeout(load, 7);
         } else {
