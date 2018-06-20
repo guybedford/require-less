@@ -48,7 +48,7 @@ define(function(require) {
     window.less = config.less || {};
     window.less.env = 'development';
 
-    var isComponent = config.less.component;
+    var isComponent = window.less.component;
 
     require(['./lessc', './normalize'], function(lessc, normalize) {
       var fileUrl = req.toUrl(lessId + '.less');
