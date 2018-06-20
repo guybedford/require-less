@@ -3,7 +3,7 @@ define(function(require) {
   var lessAPI = {};
 
   for (var key in less) {
-    if (!less.hasOwnProperty(key)) return;
+    if (!less.hasOwnProperty(key)) continue;
     lessAPI[key] = less[key];
   }
 
