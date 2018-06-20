@@ -91,7 +91,6 @@ define(['require', './normalize'], function(req, normalize) {
   lessAPI.load = function(name, req, load, _config) {
     //store config
     config = config || _config;
-    isComponent = config.less.component;
 
     if (!siteRoot) {
       siteRoot = path.resolve(
@@ -115,6 +114,8 @@ define(['require', './normalize'], function(req, normalize) {
     cfg.async = false;
     cfg.syncImport = true;
 
+    isComponent = cfg.component;
+    
     //make it compatible with v1 and v2
     var generation = less.version[0];
     var renderer;
