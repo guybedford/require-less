@@ -10,10 +10,10 @@ define(function(require) {
   lessAPI.load = function(lessId, req, load, config) {
     if (!config) config = {};
     if (!config.less) config.less = {};
-    var savedState = config.less.component;
-    if (!savedState) config.less.component = true;
+    var inject = config.less.inject;
+    if (!inject) config.less.inject = false;
     less.load.call(this, lessId, req, load, config);
-    if (config.less.component !== savedState) config.less.component = savedState;
+    if (config.less.inject !== inject) config.less.inject = inject;
   };
 
   return lessAPI;
