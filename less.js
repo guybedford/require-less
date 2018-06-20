@@ -48,6 +48,8 @@ define(function(require) {
     window.less = config.less || {};
     window.less.env = 'development';
 
+    var isComponent = config.less.component;
+
     require(['./lessc', './normalize'], function(lessc, normalize) {
       var fileUrl = req.toUrl(lessId + '.less');
       fileUrl = normalize.absoluteURI(fileUrl, pagePath);
@@ -87,7 +89,7 @@ define(function(require) {
 
         var css = cssGetter(output);
 
-        if (config.less.component !== true) {
+        if (isComponent !== true) {
           lessAPI.inject(normalize(css, fileUrl, pagePath));
           setTimeout(load, 7);
         } else {
