@@ -1,5 +1,10 @@
 {
+  "name": "@bracken/require-less",
+  "version": "0.1.5",
   "volo": {
     "type": "directory"
-  }
+  },
+  "main": "less.js",
+  "repository": "https://github.com/guybedford/require-less.git",
+  "license": "MIT"
 }
